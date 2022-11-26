@@ -2,7 +2,8 @@ import re
 
 
 class Formatter:
-    def pull_out_file_blocks(self, text):
+    @staticmethod
+    def pull_out_file_blocks(text):
         blocks_texts = re.findall(r'\[([^\[\]]*)\]', text)
         blocks = set()
         for block_text in blocks_texts:

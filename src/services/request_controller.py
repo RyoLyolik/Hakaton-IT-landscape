@@ -1,12 +1,13 @@
 import requests
 
-from config import Config
+
+from config import RequestConfig
 
 
 class RequestController:
     def __init__(self):
-        self.available_hosts = Config.available_hosts
-        self.default_port = Config.default_port
+        self.available_hosts = RequestConfig.available_hosts
+        self.default_port = RequestConfig.default_port
 
     def build_map(self, path):
         for i, host in enumerate(self.available_hosts):
