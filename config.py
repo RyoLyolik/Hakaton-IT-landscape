@@ -7,6 +7,7 @@ class SSHConfig:
     default_port = 22
     username = 'admin'
     password = 'adb@2015'
+    default_folder = '/'
 
 # class HDFSConfig:
 #     url = 'http://127.0.0.1:80/webhdfs/v1/'

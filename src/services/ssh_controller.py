@@ -10,6 +10,7 @@ class SSHController:
         self.hostname = SSHConfig.main_host
         self.default_port = SSHConfig.default_port
         self.username = SSHConfig.username
+        self.default_folder = SSHConfig.default_folder
         self.__password = SSHConfig.password
         self.__client = paramiko.SSHClient()
 
@@ -20,9 +21,17 @@ class SSHController:
                               port=self.default_port)
 
     def find_path(self, filename):
-        stdin, stdout, stderr = self.__client.exec_command(f"hadoop fs -find / -name {filename}")
+        stdin, stdout, stderr = self.__client.exec_command(f"hadoop fs -find {self.default_folder} -name {filename}")
         path = stdout.readlines()
         path = "".join(path).strip()
+
+        return path
+
+    def folder_data(self, folder):
+        stdin, stdout, stderr = self.__client.exec_command(f"hadoop fs -find {self.default_folder + folder}")
+        path = list()
+        for out in stdout:
+            path.append(out.strip())
 
         return path
 
@@ -30,4 +39,7 @@ class SSHController:
         self.__client.close()
 
     def isalive(self):
+        if self.__client.get_transport().is_alive():
+            return True
+        self.connect()
         return self.__client.get_transport().is_alive()
