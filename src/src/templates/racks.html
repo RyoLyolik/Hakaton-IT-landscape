@@ -18,8 +18,7 @@
 <details>
     <summary><h2>{{ rack }}</h2></summary>
     {% for host in racks[rack] %}
-    <div class="host_content" onclick="copyToClipBoard('#{{ host[" id
-    "] }}')">
+    <div class="host_content" onclick="copyToClipBoard('#{{ host["id"] }}')">
     <span id="{{ host['id'] }}">{{ host['host'] }}</span><span>📋</span><br/>
     </div>
     {% endfor %}

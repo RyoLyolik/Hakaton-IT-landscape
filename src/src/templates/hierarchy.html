@@ -17,8 +17,7 @@
 </form>
 {%for folder in folders %}
 
-<div class="path_content" onclick="copyToClipBoard('#{{ folder[" id
-"] }}')">
+<div class="path_content" onclick="copyToClipBoard('#{{ folder["id"] }}')">
 <span id="{{ folder['id'] }}">{{ folder['path'] }}</span><span>📋</span><br/>
 </div>
 {% endfor %}
