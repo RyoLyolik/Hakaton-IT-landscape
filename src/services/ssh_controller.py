@@ -1,6 +1,8 @@
 import subprocess
+from subprocess import PIPE
 import re
 import paramiko
+import os
 
 from config import SSHConfig
 
@@ -35,6 +37,15 @@ class SSHController:
 
         return path
 
+    def build_map(self, path):
+        ssh_stdin, ssh_stdout, ssh_stderr = self.__client.exec_command(
+            f"hdfs fsck {path} -files -locations -blocks -racks")
+        data = ssh_stdout.readlines()
+        # for i in range(len(data)):
+        #     data[i] = data.strip()
+        data = "".join(data)
+        return data
+
     def disconnect(self):
         self.__client.close()
 
@@ -43,3 +54,16 @@ class SSHController:
             return True
         self.connect()
         return self.__client.get_transport().is_alive()
+
+    def build_map_on_srv(self, path):
+        data = subprocess.run(f"hdfs fsck {path} -files -locations -blocks -racks", shell=True, stdout=PIPE).stdout.decode('utf-8')
+        return data
+
+    def find_file_on_srv(self, filename):
+        path = subprocess.run(f"hadoop fs -find {self.default_folder} -name {filename}", shell=True, stdout=PIPE).stdout.decode('utf-8')
+        return path
+
+    def folder_data_on_srv(self, folder):
+        data = subprocess.run(f"sudo hadoop fs -find {self.default_folder + folder}", shell=True, stdout=PIPE).stdout.decode('utf-8')
+
+        return data.split("\n")
